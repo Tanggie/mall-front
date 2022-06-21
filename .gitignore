@@ -109,3 +109,4 @@ dist
 ./public/img/
 ./public/imgs/
 
+.node_modules/
