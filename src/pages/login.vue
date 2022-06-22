@@ -61,10 +61,12 @@ export default {
         password:password.value
      })).then((res)=>{
 
-        //       // eslint-disable-next-line no-console
-        // console.log(res);
+              // eslint-disable-next-line no-console
+        console.log(res);
+        cookie.set('csumall_token',res.id,{expires:'Session'});
         cookie.set('userId',res.id,{expires:'Session'});
-        store.commit('saveUserName',res.name)
+        store.commit('saveUserName',res.name);
+        sessionStorage.setItem("username", res.name)
         router.push({
           name:'index',
           params:{

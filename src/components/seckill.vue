@@ -27,14 +27,15 @@ export default {
    const  c_hour = ref(0);
    const  c_minute = ref(0);
    const  c_second = ref(0);
-  var m1 = moment();
+      var m1 = moment();
   let t =  props.targetTime.split(":");
 
   m1.set("hour", t[0]);
   m1.set("minute", t[1]);
+     
 
   const updateTime = () =>{
-     let now = moment();
+let now = moment();
      let _c_hour = m1.diff(now, 'hours') % 60;
     let _c_minute = m1.diff(now, 'minutes') % 60;
      let _c_second = m1.diff(now, 'seconds') % 60;
@@ -44,7 +45,7 @@ export default {
   }
 
   onMounted(() => {
-        setInterval(updateTime, 1000)
+        setInterval(updateTime, 100)
     })
  return {
    c_hour, c_minute, c_second

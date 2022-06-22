@@ -1,19 +1,19 @@
 let baseURL;
 switch (process.env.NODE_ENV) {
   case 'development':
-    baseURL = 'http://localhost:8887/csu_super_mall/api';
+    baseURL = 'http://106.55.173.219:10034/csu_super_mall/';
     break;
   case 'test':
-    baseURL = 'http://localhost:8887/csu_super_mall/';
+    baseURL = 'http://106.55.173.219:10034/csu_super_mall/';
     break;
   case 'prev':
-    baseURL = 'http://prev-mall-pre.springboot.cn/api';
+    baseURL = 'http://106.55.173.219:10034/csu_super_mall/';
     break;
   case 'prod':
-    baseURL = 'http://dev-mall-pre.springboot.cn/api/';
+    baseURL = 'http://106.55.173.219:10034/csu_super_mall/';
     break;
   default:
-    baseURL = 'http://localhost:8887/csu_super_mall/';
+    baseURL = 'http://106.55.173.219:10034/csu_super_mall/';
     break;
 }
 

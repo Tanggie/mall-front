@@ -286,10 +286,6 @@ export default {
 
         this.cartTotalPrice = res.total //商品总金额
         this.cartList = data_list
-
-    
-             // eslint-disable-next-line no-console
-             console.log(this.cartTotalPrice)
     },
     // 打开新增地址弹框
     openAddressModal() {

@@ -125,8 +125,8 @@ export default {
     ServiceBar,
   },
   setup() {
-    const { ctx } = getCurrentInstance()
-    let id = ctx.$router.currentRoute.value.params.id //获取商品ID
+    const { proxy } = getCurrentInstance()
+    let id = proxy.$router.currentRoute.value.params.id //获取商品ID
     let item_num = ref(1)
     const version = ref(1) //商品版本切换
     const product = ref({}) //商品信息
@@ -136,7 +136,7 @@ export default {
       getProductInfo()
     })
     const getProductInfo = () => {
-      ctx.$axios.get(`/product/${id}`).then((res) => {
+      proxy.$axios.get(`/product/${id}`).then((res) => {
                 // eslint-disable-next-line no-console
         console.log(res);
         product.value = res.product;
@@ -147,7 +147,11 @@ export default {
       })
     }
     const addCart = () => {
-      ctx.$axios
+
+       if (sessionStorage.getItem("username") == '' || sessionStorage.getItem("username") == "undefined" || sessionStorage.getItem("username") == null){
+        proxy.$router.push('/login')
+       }
+      proxy.$axios
         .get('/add_cart', {
         params: {
            pid: id,
@@ -155,9 +159,12 @@ export default {
         },
       })
         .then(() => {
-          let cart_count = ctx.$store.state.cartCount;
-          ctx.$store.dispatch('saveCartCount', cart_count + item_num.value)
-          ctx.$router.push('/cart')
+          let cart_count = proxy.$store.state.cartCount;
+          proxy.$store.dispatch('saveCartCount', cart_count + item_num.value)
+          proxy.$router.push({path:'/cart',
+          params: {
+            date:new Date().getTime()
+          }})
         })
     } 
 

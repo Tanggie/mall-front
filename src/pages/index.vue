@@ -53,7 +53,7 @@
       </div>
       <div class="seckill-row" style="width: 100%; display:flex">
         <div class="seckill-part" style="width:20%">
-     <seckill target-time="23:00"> </seckill>
+     <seckill target-time="23:30"> </seckill>
         </div>
         <div class="seckill-part2">
                <div class="ads-box">
@@ -163,7 +163,7 @@ export default {
     seckill,
   },
   setup() {
-    const { ctx } = getCurrentInstance();
+    const { proxy } = getCurrentInstance();
     const slideList = reactive([
       {
         id: "42",
@@ -318,7 +318,7 @@ export default {
 
     });
     const init = async () => {
-      const res = await ctx.$axios.get("/product/product_list", {
+      const res = await proxy.$axios.get("/product/product_list", {
         params: {
            start: 4,
           size: 8,
@@ -328,7 +328,7 @@ export default {
     };
 
     const init_products = async () => {
-      const res = await ctx.$axios.get("/product/product_list", {
+      const res = await proxy.$axios.get("/product/product_list", {
         params: {
            start: 12,
           size: 5,
@@ -343,7 +343,7 @@ export default {
       console.log(adsList);
     };
         const addCart = async(id) => {
-      ctx.$axios
+      proxy.$axios
         .get('/add_cart', {
         params: {
            pid: id,
@@ -351,17 +351,20 @@ export default {
         },
       })
         .then(() => {
-          let cart_count = ctx.$store.state.cartCount;
-          ctx.$store.dispatch('saveCartCount', cart_count + 1)
+          let cart_count = proxy.$store.state.cartCount;
+          proxy.$store.dispatch('saveCartCount', cart_count + 1)
         })
             showModal.value = true;
     };
     const goToCart = () => {
-      ctx.$router.push("/cart");
+      proxy.$router.push({name:'cart',
+          params: {
+            date:new Date().getTime()
+          }});
     };
 
   //   const getImageByIdList = async (imageId) => {
-  //  const res = await ctx.$axios.get("/products/" + imageId + "/productImages", Qs.stringify({
+  //  const res = await proxy.$axios.get("/products/" + imageId + "/productImages", Qs.stringify({
   //       params: {
   //         // cid: 60,
   //         type: "single",
