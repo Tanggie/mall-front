@@ -35,6 +35,7 @@ export default createRouter({
         {
           path: '/seckill/:id',
           name: 'seckill',
+          meta: { requireAuth: true },
           component: () => import('./pages/seckill.vue'),
         },
       ],
@@ -63,10 +64,12 @@ export default createRouter({
       path: '/cart',
       name: 'cart',
       component: () => import('./pages/cart.vue'),
+      meta: { requireAuth: true }
     },
     {
       path: '/order',
       name: 'order',
+      meta: { requireAuth: true },
       component: () => import('./pages/order.vue'),
       children: [
         {

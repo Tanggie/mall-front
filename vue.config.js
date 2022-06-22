@@ -16,6 +16,7 @@ module.exports = {
   // outputDir:'dist',
   // indexPath:'index2.html',
   // lintOnSave:false,
+  // target:'http://106.55.173.219:10034/csu_super_mall/',
   productionSourceMap:true,
   chainWebpack:(config)=>{
     config.plugins.delete('prefetch');

@@ -124,13 +124,19 @@ export default {
     this.getOrderDetail()
   },
   methods: {
+ 
     getOrderDetail() {
+        //  message.info(this.orderId)
+         this.$axios.get('/order', {
+        params: {
+           oid: this.orderId,
+        },}) // 第一遍序列化错误
       this.$axios.get('/order', {
         params: {
            oid: this.orderId,
         },}).then((res) => {
           // eslint-disable-next-line no-console
-          console.log(res)
+          // console.log(res)
         this.orderCode = res.orderCode
         this.addressInfo = this.getAddressInfo(res.address)
         this.orderDetail = res.orderItems

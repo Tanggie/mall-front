@@ -99,8 +99,8 @@ export default {
     ServiceBar,
   },
   setup() {
-    const { ctx } = getCurrentInstance()
-    let id = ctx.$router.currentRoute.value.params.id //获取商品ID
+    const { proxy } = getCurrentInstance()
+    let id = proxy.$router.currentRoute.value.params.id //获取商品ID
     let item_num = ref(1)
     const version = ref(1) //商品版本切换
     const product = ref({}) //商品信息
@@ -111,7 +111,7 @@ export default {
    const  c_minute = ref(0);
    const  c_second = ref(0);
   var m1 = moment();
-  let t = "11:12".split(":");
+  let t = "23:30".split(":");
   m1.set("hour", t[0]);
   m1.set("minute", t[1]);
     onMounted(() => {
@@ -119,7 +119,7 @@ export default {
      setInterval(updateTime, 50)
     })
     const getProductInfo = () => {
-      ctx.$axios.get(`/product/${id}`).then((res) => {
+      proxy.$axios.get(`/product/${id}`).then((res) => {
                 // eslint-disable-next-line no-console
         console.log(res);
         product.value = res.product;
@@ -130,21 +130,25 @@ export default {
       })
     }
     const addCart = () => {
-      ctx.$axios
+      proxy.$axios
         .post('/sec_kill',  Qs.stringify({
         productId:id,
      }))
         .then(() => {
 
-           let cart_count = ctx.$store.state.cartCount;
-          ctx.$store.dispatch('saveCartCount', cart_count + item_num.value)
-          ctx.$router.push('/cart')
+           let cart_count = proxy.$store.state.cartCount;
+          proxy.$store.dispatch('saveCartCount', cart_count + item_num.value)
+          proxy.$router.push({path:'/cart',
+          params: {
+            date:new Date().getTime()
+          }})
         }).catch(error=>{
     
           if (error.status == -1){
                   // eslint-disable-next-line no-console
           console.log(error)
-            buttonState.value = 2
+            buttonState.value = 2;
+           product.value.stock = 0;
           }
         })
     }

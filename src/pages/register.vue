@@ -48,7 +48,7 @@ export default {
     NavFooter,
   },
   setup() {
-    const { ctx } = getCurrentInstance()
+    const { proxy } = getCurrentInstance()
     let name = ref('')
     let password = ref('')
     let email = ref('')
@@ -56,7 +56,7 @@ export default {
     let router = useRouter()
     
     const register = () => {
-      let { name, password, email, phone } = ctx
+      let { name, password, email, phone } = proxy
       if (!name) {
         message.error('用户名不能为空')
         return
@@ -81,7 +81,7 @@ export default {
         message.error('电话格式不正确')
         return
       }
-      ctx.$axios
+      proxy.$axios
         .post('/user/register', {
         name,
         password,

@@ -78,7 +78,7 @@
 import OrderHeader from './../components/OrderHeader'
 import ServiceBar from './../components/ServiceBar'
 import NavFooter from './../components/NavFooter'
-import { getCurrentInstance, onMounted, reactive, ref } from 'vue'
+import { getCurrentInstance, onMounted, reactive, ref, watch, onBeforeMount} from 'vue'
 import { message } from 'ant-design-vue'
 export default {
   name: 'index',
@@ -88,22 +88,40 @@ export default {
     NavFooter,
   },
   setup() {
-    const { ctx } = getCurrentInstance()
+    const { proxy } = getCurrentInstance()
     let list = reactive([]) //商品列表
     const allChecked = ref(false) //是否全选
     const cartTotalPrice = ref(0) //商品总金额
     const checkedNum = ref(0) //选中商品数量
     const itemLength = ref(0) // 数目
-
+//  var result;
     onMounted(() => {
+      checkLogin()
       getCartList()
+      //  renderData(result)
     })
-
+    onBeforeMount (()=>{
+        //   if (localStorage.getItem("data") ) {
+        //     //replaceState替换数据 Object.assign合并对象
+        //     proxy.$store.replaceState(Object.assign({}, proxy.$store.state,JSON.parse(localStorage.getItem("data"))))
+        // }
+        // window.addEventListener("beforeunload",()=>{
+        //     localStorage.setItem("data",JSON.stringify(proxy.$store.state))
+        // });
+    })
+    // watch (()=>{
+    //   getCartList()
+    // })
+ watch(proxy.$router.currentRoute, () => {
+          // getData(); //获取列表数据方法
+              // getCartList()
+        });
     // 获取购物车列表
     const getCartList = () => {
-      ctx.$axios.get('/fore_cart').then((res) => {
+      proxy.$axios.get('/fore_cart').then((res) => {
         // eslint-disable-next-line no-console
         console.log(res)
+        // result = res;
         renderData(res)
       })
     }
@@ -128,7 +146,7 @@ export default {
       }
     
       updateCartItemTotal();
-      ctx.$axios
+      proxy.$axios
         .get('/fore_changeOrderItem', {
         params: {
            pid: item.product.id,
@@ -147,7 +165,7 @@ export default {
     }
     // 删除购物车商品
     const delProduct = (item) => {
-      ctx.$axios.delete('/delete_cart', {
+      proxy.$axios.delete('/delete_cart', {
         params: {
            oiid: item.id,
         },}).then(() => {
@@ -161,9 +179,15 @@ export default {
     // 控制全选功能
     const toggleAll = () => {
       let url = allChecked.value ? '/carts/unSelectAll' : '/carts/selectAll'
-      ctx.$axios.put(url).then(() => {
+      proxy.$axios.put(url).then(() => {
         // renderData(res)
       })
+    }
+    const checkLogin=()=>{
+      // let username = proxy.$store.state.username;
+      // if (username == ""){
+      //    proxy.$router.push('/login')
+      // }
     }
     // 公共赋值
     const renderData = (res) => {
@@ -191,6 +215,7 @@ export default {
           const updateCartTotal = () => {
        let total = 0;
        let check_num = 0;
+       itemLength.value = list.value.length
       list.value.forEach((item) =>{
        if (item['productSelected']){
         total = total + Number(item['productTotalPrice']);
@@ -215,13 +240,13 @@ export default {
       if (isCheck) {
         message.warning('请选择一件商品')
       } else {
-       ctx.$axios.get('/fore_buy', {
+       proxy.$axios.get('/fore_buy', {
         params: {
            oiids: ooid_list + '',
         },}).then((res) => {
        // eslint-disable-next-line no-console
        console.log(res)
-         ctx.$router.push({
+         proxy.$router.push({
         name: 'order-confirm',
         params:{
           res: JSON.stringify(res)

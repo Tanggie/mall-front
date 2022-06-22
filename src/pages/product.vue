@@ -78,22 +78,22 @@ export default {
     ProductParam,
   },
   setup() {
-    const { ctx } = getCurrentInstance()
+    const { proxy } = getCurrentInstance()
     const showSlide = ref('') //控制动画效果
     let product = ref({}) //商品信息
-    const id = ctx.$router.currentRoute.value.params.id
+    const id = proxy.$router.currentRoute.value.params.id
 
     onMounted(() => {
       getProductInfo()
     })
 
     const getProductInfo = () => {
-      ctx.$axios.get(`/products/${id}`).then((res) => {
+      proxy.$axios.get(`/products/${id}`).then((res) => {
         product.value = res
       })
     }
     const buy = () => {
-      ctx.$router.push(`/detail/${id}`)
+      proxy.$router.push(`/detail/${id}`)
     }
     const closeVideo = () => {
       showSlide.value = 'slideUp'
